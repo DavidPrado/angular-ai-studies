@@ -1,0 +1,250 @@
+<div class="page-layout">
+  <!-- CABEÇALHO PADRÃO DO SISTEMA -->
+  <div class="page-header">
+    <div class="header-titles">
+      <h2>{{ isEditMode ? "Editar Usuário" : "Novo Usuário" }}</h2>
+      <p>
+        Configure os dados cadastrais, regras de acesso e permissões do usuário
+        no sistema.
+      </p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn-secondary" (click)="navigateToList()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="onSubmit()"
+        [disabled]="userForm.invalid"
+      >
+        <mat-icon>save</mat-icon>
+        <span>Salvar Alterações</span>
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <!-- BLOCO 1: DADOS CADASTRAIS & PESSOAIS -->
+    <div class="card-section">
+      <div class="card-header">
+        <mat-icon>person</mat-icon>
+        <h3>Informações Pessoais e Cadastrais</h3>
+      </div>
+
+      <!-- Upload de Foto de Perfil -->
+      <div class="avatar-container">
+        <div class="avatar-preview">
+          <!-- Se houver imagem selecionada ou URL carregada do backend -->
+          <img
+            *ngIf="previewUrl; else defaultAvatar"
+            [src]="previewUrl"
+            alt="Foto do Usuário"
+          />
+
+          <!-- Fallback elegante exibindo ícone padrão de usuário -->
+          <ng-template #defaultAvatar>
+            <div class="avatar-placeholder">
+              <mat-icon>person</mat-icon>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="avatar-info">
+          <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            hidden
+          />
+          <button type="button" class="btn-outline" (click)="fileInput.click()">
+            <mat-icon>file_upload</mat-icon> Alterar Foto
+          </button>
+          <span>Formatos permitidos: JPG, PNG. Recomendado até 2MB.</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Nome Completo *</label>
+          <input
+            type="text"
+            formControlName="fullName"
+            placeholder="Ex: João da Silva"
+          />
+        </div>
+
+        <div class="field">
+          <label>Nº de Inscrição / Matrícula</label>
+          <input
+            type="text"
+            formControlName="registrationNumber"
+            placeholder="Ex: MAT-10492"
+          />
+        </div>
+
+        <div class="field">
+          <label>E-mail *</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="usuario@erpiasmart.com"
+          />
+        </div>
+
+        <div class="field">
+          <label>Telefone Principal</label>
+          <input
+            type="text"
+            formControlName="phoneNumber"
+            placeholder="(11) 99999-9999"
+          />
+        </div>
+
+        <div class="field">
+          <label>Telefone Secundário (Opção 2)</label>
+          <input
+            type="text"
+            formControlName="secondaryPhone"
+            placeholder="(11) 98888-8888"
+          />
+        </div>
+
+        <div class="field">
+          <label>Departamento</label>
+          <input
+            type="text"
+            formControlName="department"
+            placeholder="Ex: Tecnologia / Financeiro"
+          />
+        </div>
+
+        <div class="field">
+          <label>Centro de Custo</label>
+          <input
+            type="text"
+            formControlName="costCenter"
+            placeholder="Ex: CC-0102"
+          />
+        </div>
+
+        <div class="field">
+          <label>Cargo / Posição</label>
+          <input
+            type="text"
+            formControlName="position"
+            placeholder="Ex: Analista de Sistemas"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCO 2: PERFIS DE ACESSO & SEGURANÇA -->
+    <div class="card-section">
+      <div class="card-header">
+        <mat-icon>security</mat-icon>
+        <h3>Perfis de Acesso & Segurança</h3>
+      </div>
+
+      <div class="form-grid">
+        <div class="field col-span-2">
+          <label>Perfis / Funções (Roles) *</label>
+          <mat-select
+            formControlName="roleIds"
+            multiple
+            placeholder="Selecione os perfis de acesso"
+          >
+            <mat-option *ngFor="let role of availableRoles" [value]="role.id">
+              {{ role.displayName }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <div class="field">
+          <label>{{
+            isEditMode
+              ? "Nova Senha (deixe em branco p/ manter)"
+              : "Senha de Acesso *"
+          }}</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+          />
+        </div>
+
+        <div class="field">
+          <label>Frequência de Troca de Senha (Dias)</label>
+          <input
+            type="number"
+            formControlName="passwordExpirationDays"
+            placeholder="Ex: 90"
+          />
+          <small class="help-text"
+            >Prazo para expiração periódica da senha.</small
+          >
+        </div>
+
+        <div class="toggle-container col-span-2">
+          <mat-slide-toggle formControlName="active" color="primary">
+            Usuário Ativo no Sistema
+          </mat-slide-toggle>
+
+          <mat-slide-toggle formControlName="mustChangePassword" color="accent">
+            Exigir alteração de senha no próximo login
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCO 3: VALIDADE DA CONTA & REGRAS TEMPORÁRIAS -->
+    <div class="card-section">
+      <div class="card-header">
+        <mat-icon>schedule</mat-icon>
+        <h3>Validade da Conta & Restrições de Acesso</h3>
+      </div>
+
+      <div class="form-grid">
+        <div class="toggle-container col-span-3">
+          <mat-slide-toggle formControlName="isTemporary" color="warn">
+            Este é um usuário temporário? (Prestador de serviço, Estagiário,
+            Terceirizado)
+          </mat-slide-toggle>
+        </div>
+
+        <!-- Exibição condicional para usuários temporários -->
+        <ng-container *ngIf="userForm.get('isTemporary')?.value">
+          <div class="field">
+            <label>Acesso Válido A Partir De</label>
+            <input type="date" formControlName="accessStartDate" />
+          </div>
+
+          <div class="field">
+            <label>Acesso Válido Até (Data Limite) *</label>
+            <input type="date" formControlName="accessEndDate" />
+          </div>
+
+          <div class="toggle-container align-end">
+            <mat-slide-toggle formControlName="autoDeactivate" color="warn">
+              Bloquear conta automaticamente após a data limite
+            </mat-slide-toggle>
+          </div>
+        </ng-container>
+
+        <div class="field col-span-3">
+          <label>Restrição por Endereço IP (Opcional)</label>
+          <input
+            type="text"
+            formControlName="allowedIpAddresses"
+            placeholder="Ex: 192.168.1.1, 200.150.10.5"
+          />
+          <small class="help-text"
+            >Separe múltiplos endereços por vírgula. Deixe em branco para
+            liberar acesso de qualquer IP.</small
+          >
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

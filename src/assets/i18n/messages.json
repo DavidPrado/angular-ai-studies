@@ -1,0 +1,461 @@
+{
+  "app.name": {
+    "pt": "Moviment Tech",
+    "en": "Moviment Tech",
+    "es": "Moviment Tech",
+    "zh": "Moviment Tech",
+    "hi": "Moviment Tech",
+    "ar": "Moviment Tech"
+  },
+  "app.tagline": {
+    "pt": "Smart ERP IA",
+    "en": "Intelligent ERP",
+    "es": "ERP Inteligente",
+    "zh": "智能企业资源规划",
+    "hi": "स्मार्ट ईआरपी",
+    "ar": "نظام تخطيط الموارد الذكي"
+  },
+  "auth.login.email_label": {
+    "pt": "Email",
+    "en": "Email",
+    "es": "Correo electrónico",
+    "zh": "电子邮件",
+    "hi": "ईमेल",
+    "ar": "البريد الإلكتروني"
+  },
+  "auth.login.password_label": {
+    "pt": "Senha",
+    "en": "Password",
+    "es": "Contraseña",
+    "zh": "密码",
+    "hi": "पासवर्ड",
+    "ar": "كلمة المرور"
+  },
+  "auth.login.submit": {
+    "pt": "Entrar",
+    "en": "Sign in",
+    "es": "Iniciar sesión",
+    "zh": "登录",
+    "hi": "साइन इन करें",
+    "ar": "تسجيل الدخول"
+  },
+  "auth.login.email_placeholder": {
+    "pt": "seu@email.com",
+    "en": "your@email.com",
+    "es": "su@email.com",
+    "zh": "您的@电子邮件.com",
+    "hi": "आपका@ईमेल.com",
+    "ar": "بريدك@الإلكتروني.com"
+  },
+  "auth.login.password_placeholder": {
+    "pt": "Sua senha",
+    "en": "Your password",
+    "es": "Su contraseña",
+    "zh": "您的密码",
+    "hi": "आपका पासवर्ड",
+    "ar": "كلمة المرور الخاصة بك"
+  },
+  "auth.login.error": {
+    "pt": "Email ou senha inválidos",
+    "en": "Invalid email or password",
+    "es": "Correo o contraseña inválidos",
+    "zh": "电子邮件或密码无效",
+    "hi": "अमान्य ईमेल या पासवर्ड",
+    "ar": "بريد إلكتروني أو كلمة مرور غير صالحة"
+  },
+  "auth.login.locked": {
+    "pt": "Conta bloqueada. Entre em contato com o suporte",
+    "en": "Account locked. Contact support",
+    "es": "Cuenta bloqueada. Contacte soporte",
+    "zh": "账户已锁定。请联系支持",
+    "hi": "खाता लॉक है। सहायता से संपर्क करें",
+    "ar": "الحساب مقفل. اتصل بالدعم"
+  },
+  "auth.login.too_many_attempts": {
+    "pt": "Muitas tentativas. Aguarde alguns minutos",
+    "en": "Too many attempts. Wait a few minutes",
+    "es": "Demasiados intentos. Espere unos minutos",
+    "zh": "尝试次数过多。请等待几分钟",
+    "hi": "बहुत सारे प्रयास। कुछ मिनट प्रतीक्षा करें",
+    "ar": "محاولات كثيرة جدًا. انتظر بضع دقائق"
+  },
+  "auth.login.server_unavailable": {
+    "pt": "Servidor indisponível",
+    "en": "Server unavailable",
+    "es": "Servidor no disponible",
+    "zh": "服务器不可用",
+    "hi": "सर्वर अनुपलब्ध",
+    "ar": "الخادم غير متاح"
+  },
+  "auth.login.generic_error": {
+    "pt": "Erro ao realizar login",
+    "en": "Login error",
+    "es": "Error al iniciar sesión",
+    "zh": "登录错误",
+    "hi": "लॉगिन त्रुटि",
+    "ar": "خطأ في تسجيل الدخول"
+  },
+  "validation.email.required": {
+    "pt": "Email é obrigatório",
+    "en": "Email is required",
+    "es": "El correo es obligatorio",
+    "zh": "电子邮件是必填项",
+    "hi": "ईमेल आवश्यक है",
+    "ar": "البريد الإلكتروني مطلوب"
+  },
+  "validation.email.invalid": {
+    "pt": "Email inválido",
+    "en": "Invalid email",
+    "es": "Correo inválido",
+    "zh": "电子邮件无效",
+    "hi": "अमान्य ईमेल",
+    "ar": "بريد إلكتروني غير صالح"
+  },
+  "validation.password.required": {
+    "pt": "Senha é obrigatória",
+    "en": "Password is required",
+    "es": "La contraseña es obligatoria",
+    "zh": "密码是必填项",
+    "hi": "पासवर्ड आवश्यक है",
+    "ar": "كلمة المرور مطلوبة"
+  },
+  "validation.password.min": {
+    "pt": "Senha deve ter no mínimo 8 caracteres",
+    "en": "Password must be at least 8 characters",
+    "es": "La contraseña debe tener al menos 8 caracteres",
+    "zh": "密码必须至少8个字符",
+    "hi": "पासवर्ड कम से कम 8 अक्षर का होना चाहिए",
+    "ar": "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
+  },
+  "menu.dashboard": {
+    "pt": "Dashboard",
+    "en": "Dashboard",
+    "es": "Tablero"
+  },
+  "menu.dashboard_desc": {
+    "pt": "Visão geral do sistema",
+    "en": "System overview",
+    "es": "Visión general del sistema"
+  },
+  "menu.admin": {
+    "pt": "Administração",
+    "en": "Administration",
+    "es": "Administración"
+  },
+  "menu.users": {
+    "pt": "Usuários",
+    "en": "Users",
+    "es": "Usuarios"
+  },
+  "menu.users_desc": {
+    "pt": "Quem acessa o sistema",
+    "en": "Who accesses the system",
+    "es": "Quién accede al sistema"
+  },
+  "menu.permissions": {
+    "pt": "Permissões",
+    "en": "Permissions",
+    "es": "Permisos"
+  },
+  "menu.permissions_desc": {
+    "pt": "Lista de permissões",
+    "en": "Permission list",
+    "es": "Lista de permisos"
+  },
+  "menu.profile": {
+    "pt": "Meu Perfil",
+    "en": "My Profile",
+    "es": "Mi Perfil"
+  },
+  "menu.profile_desc": {
+    "pt": "Perfis de acesso",
+    "en": "Access profiles",
+    "es": "Perfiles de acceso"
+  },
+  "menu.tenants": {
+    "pt": "Gestão de Tenants",
+    "en": "Tenant Management",
+    "es": "Gestión de Tenants"
+  },
+  "menu.tenants_desc": {
+    "pt": "Empresas do sistema",
+    "en": "System companies",
+    "es": "Empresas del sistema"
+  },
+  "menu.modules": {
+    "pt": "Módulos",
+    "en": "Modules",
+    "es": "Módulos"
+  },
+  "menu.fiscal": {
+    "pt": "Fiscal",
+    "en": "Tax",
+    "es": "Fiscal"
+  },
+  "menu.fiscal_desc": {
+    "pt": "Notas e obrigações",
+    "en": "Invoices and obligations",
+    "es": "Facturas y obligaciones"
+  },
+  "menu.financial": {
+    "pt": "Financeiro",
+    "en": "Financial",
+    "es": "Financiero"
+  },
+  "menu.financial_desc": {
+    "pt": "Contas a pagar e receber",
+    "en": "Accounts payable and receivable",
+    "es": "Cuentas por pagar y cobrar"
+  },
+  "menu.search_placeholder": {
+    "pt": "Buscar tela...",
+    "en": "Search screen...",
+    "es": "Buscar pantalla..."
+  },
+  "menu.soon": {
+    "pt": "em breve",
+    "en": "coming soon",
+    "es": "próximamente"
+  },
+  "menu.no_results": {
+    "pt": "Nenhuma tela encontrada.",
+    "en": "No screen found.",
+    "es": "Ninguna pantalla encontrada."
+  },
+  "menu.registers": {
+    "pt": "Cadastros",
+    "en": "Master Data",
+    "es": "Cadastros"
+  },
+  "menu.operation": {
+    "pt": "Operação",
+    "en": "Operations",
+    "es": "Operación"
+  },
+  "menu.catalog": {
+    "pt": "Catálogo",
+    "en": "Catalog",
+    "es": "Catálogo"
+  },
+  "menu.catalog_desc": {
+    "pt": "Produtos e serviços",
+    "en": "Products and services",
+    "es": "Productos y servicios"
+  },
+  "menu.partners": {
+    "pt": "Clientes e Fornecedores",
+    "en": "Customers & Suppliers",
+    "es": "Clientes y Proveedores"
+  },
+  "menu.partners_desc": {
+    "pt": "Com quem você negocia",
+    "en": "Who you do business with",
+    "es": "Con quién negocias"
+  },
+  "menu.organization": {
+    "pt": "Organização",
+    "en": "Organization",
+    "es": "Organización"
+  },
+  "menu.organization_desc": {
+    "pt": "Estabelecimentos e centros de custo",
+    "en": "Establishments and cost centers",
+    "es": "Establecimientos y centros de costo"
+  },
+  "menu.sales": {
+    "pt": "Vendas",
+    "en": "Sales",
+    "es": "Ventas"
+  },
+  "menu.sales_desc": {
+    "pt": "Pedidos e orçamentos",
+    "en": "Orders and quotes",
+    "es": "Pedidos y presupuestos"
+  },
+  "menu.inventory": {
+    "pt": "Estoque",
+    "en": "Inventory",
+    "es": "Inventario"
+  },
+  "menu.inventory_desc": {
+    "pt": "Saldos e movimentações",
+    "en": "Balances and movements",
+    "es": "Saldos y movimientos"
+  },
+  "header.search_placeholder": {
+    "pt": "Pergunte ao Moviment AI...",
+    "en": "Ask Moviment AI...",
+    "es": "Pregunta a Moviment AI..."
+  },
+  "welcome.title": {
+    "pt": "Bem-vindo, {name}.",
+    "en": "Welcome, {name}.",
+    "es": "Bienvenido, {name}."
+  },
+  "welcome.subtitle": {
+    "pt": "Sua operação está otimizada.",
+    "en": "Your operation is optimized.",
+    "es": "Su operación está optimizada."
+  },
+  "tenant.list.title": {
+    "pt": "Tenants do Sistema",
+    "en": "System Tenants",
+    "es": "Tenants del Sistema"
+  },
+  "tenant.list.subtitle": {
+    "pt": "Gerencie o acesso, status e configurações de todos os tenants registrados.",
+    "en": "Manage access, status, and configurations for all registered tenants.",
+    "es": "Gestione el acceso, estado y configuraciones de todos los tenants registrados."
+  },
+  "tenant.list.btn_add": {
+    "pt": "Novo Tenant",
+    "en": "New Tenant",
+    "es": "Nuevo Tenant"
+  },
+  "tenant.list.search_placeholder": {
+    "pt": "Filtrar por nome ou subdomínio...",
+    "en": "Filter by name or subdomain...",
+    "es": "Filtrar por nombre o subdominio..."
+  },
+  "tenant.form.new_title": {
+    "pt": "Cadastrar Novo Tenant",
+    "en": "Register New Tenant",
+    "es": "Registrar Nuevo Tenant"
+  },
+  "tenant.form.edit_title": {
+    "pt": "Editar Tenant",
+    "en": "Edit Tenant",
+    "es": "Editar Tenant"
+  },
+  "tenant.field.id": {
+    "pt": "Código",
+    "en": "Code",
+    "es": "Código"
+  },
+  "tenant.field.name": {
+    "pt": "Nome do Tenant",
+    "en": "Tenant Name",
+    "es": "Nombre del Tenant"
+  },
+  "tenant.field.subdomain": {
+    "pt": "Subdomínio",
+    "en": "Subdomain",
+    "es": "Subdominio"
+  },
+  "tenant.field.location": {
+    "pt": "Localização",
+    "en": "Location",
+    "es": "Ubicación"
+  },
+  "tenant.field.country": {
+    "pt": "País (ISO-3)",
+    "en": "Country (ISO-3)",
+    "es": "País (ISO-3)"
+  },
+  "tenant.field.currency": {
+    "pt": "Moeda",
+    "en": "Currency",
+    "es": "Moneda"
+  },
+  "common.active": {
+    "pt": "Ativo",
+    "en": "Active",
+    "es": "Activo"
+  },
+  "common.inactive": {
+    "pt": "Inativo/Bloqueado",
+    "en": "Inactive/Locked",
+    "es": "Inactivo/Bloqueado"
+  },
+  "common.actions": {
+    "pt": "Ações",
+    "en": "Actions",
+    "es": "Acciones"
+  },
+  "common.edit": {
+    "pt": "Editar",
+    "en": "Edit",
+    "es": "Editar"
+  },
+  "common.block": {
+    "pt": "Bloquear",
+    "en": "Block",
+    "es": "Bloquear"
+  },
+  "common.unblock": {
+    "pt": "Desbloquear",
+    "en": "Unblock",
+    "es": "Desbloquear"
+  },
+  "common.save": {
+    "pt": "Salvar Alterações",
+    "en": "Save Changes",
+    "es": "Guardar Cambios"
+  },
+  "common.cancel": {
+    "pt": "Cancelar",
+    "en": "Cancel",
+    "es": "Cancelar"
+  },
+  "tenant.form.add_title": {
+    "pt": "Cadastrar Novo Tenant",
+    "en": "Register New Tenant",
+    "es": "Registrar Nuevo Tenant"
+  },
+  "tenant.form.subtitle": {
+    "pt": "Preencha as informações para configurar o novo ambiente.",
+    "en": "Fill in the information to configure the new environment.",
+    "es": "Complete la información para configurar el nuevo entorno."
+  },
+  "tenant.form.btn_save": {
+    "pt": "Salvar Tenant",
+    "en": "Save Tenant",
+    "es": "Guardar Tenant"
+  },
+  "menu.catalog_items": {
+    "pt": "Produtos e Serviços",
+    "en": "Products & Services",
+    "es": "Productos y Servicios"
+  },
+  "menu.catalog_items_desc": {
+    "pt": "Itens do catálogo",
+    "en": "Catalog items",
+    "es": "Ítems del catálogo"
+  },
+  "menu.catalog_categories": {
+    "pt": "Categorias",
+    "en": "Categories",
+    "es": "Categorías"
+  },
+  "menu.catalog_categories_desc": {
+    "pt": "Seções e campos extras",
+    "en": "Sections and extra fields",
+    "es": "Secciones y campos extra"
+  },
+  "menu.fin_payable": {
+    "pt": "Contas a Pagar",
+    "en": "Accounts Payable",
+    "es": "Cuentas por Pagar"
+  },
+  "menu.fin_payable_desc": {
+    "pt": "Fornecedores e vencimentos",
+    "en": "Suppliers and due dates",
+    "es": "Proveedores y vencimientos"
+  },
+  "menu.fin_receivable": {
+    "pt": "Contas a Receber",
+    "en": "Accounts Receivable",
+    "es": "Cuentas por Cobrar"
+  },
+  "menu.fin_receivable_desc": {
+    "pt": "Clientes e recebimentos",
+    "en": "Customers and receipts",
+    "es": "Clientes y cobros"
+  },
+  "menu.operations_center": {
+    "pt": "Central de Operações"
+  },
+  "menu.operations_center_desc": {
+    "pt": "Acompanhe importações e exportações em tempo real"
+  }
+}

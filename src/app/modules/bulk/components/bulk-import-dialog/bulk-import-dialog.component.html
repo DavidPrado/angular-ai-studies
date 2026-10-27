@@ -1,0 +1,16 @@
+<div class="action-group">
+  <!-- ★ NOVO: Botão de Importar -->
+  <button mat-stroked-button (click)="openImportDialog()">
+    <mat-icon>upload_file</mat-icon>
+    Importar
+  </button>
+
+  <!-- Seu botão de Exportar existente -->
+  <app-bulk-export entity="catalog-items" [paramsProvider]="filtrosAtuais"></app-bulk-export>
+
+  <!-- Botão de Novo Item existente -->
+  <button class="btn-new" (click)="addItem()" [disabled]="!canWrite()">
+    <mat-icon>add</mat-icon>
+    Novo Item
+  </button>
+</div>

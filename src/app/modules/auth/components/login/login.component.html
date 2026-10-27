@@ -1,0 +1,100 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    
+    <!-- Seletor de Idioma - AGORA ORGANIZADO -->
+    <div class="language-selector">
+      <button mat-stroked-button [matMenuTriggerFor]="languageMenu" class="lang-button">
+        <span class="current-flag">{{ currentLanguageFlag }}</span>
+        <span class="current-lang-name">{{ getCurrentLanguageName() }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #languageMenu="matMenu" class="language-menu">
+        <button 
+          mat-menu-item 
+          *ngFor="let lang of i18n.availableLanguages"
+          (click)="changeLanguage(lang.code)"
+          [class.active]="currentLanguage === lang.code">
+          <span class="flag">{{ lang.flag }}</span>
+          <span class="lang-name">{{ lang.name }}</span>
+          <mat-icon *ngIf="currentLanguage === lang.code" class="check-icon">check</mat-icon>
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- Header com LÂMPADA (logo Moviment Tech) -->
+    <div class="login-header">
+      <div class="logo-container">
+        <mat-icon class="logo-icon">lightbulb</mat-icon>
+        <div class="logo-glow"></div>
+      </div>
+      <h1>{{ 'app.name' | translate }}</h1>
+      <p class="subtitle">{{ 'app.tagline' | translate }}</p>
+    </div>
+
+    <!-- Alert Component -->
+    <app-alert 
+      *ngIf="errorMessage"
+      [type]="'error'"
+      [message]="errorMessage"
+      [dismissible]="true">
+    </app-alert>
+
+    <!-- Formulário -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      
+      <!-- Campo Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'auth.login.email_label' | translate }}</mat-label>
+        <input 
+          matInput 
+          type="email" 
+          formControlName="email"
+          placeholder="{{ 'auth.login.email_placeholder' | translate }}"
+          autocomplete="email">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-error *ngIf="emailControl?.hasError('required')">
+          {{ 'validation.email.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="emailControl?.hasError('email')">
+          {{ 'validation.email.invalid' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'auth.login.password_label' | translate }}</mat-label>
+        <input 
+          matInput 
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="{{ 'auth.login.password_placeholder' | translate }}"
+          autocomplete="current-password">
+        <mat-icon matPrefix>lock</mat-icon>
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hidePassword = !hidePassword"
+          type="button"
+          [attr.aria-label]="'Show password'">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordControl?.hasError('required')">
+          {{ 'validation.password.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="passwordControl?.hasError('minlength')">
+          {{ 'validation.password.min' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        class="submit-btn full-width"
+        [disabled]="isLoading || loginForm.invalid">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="spinner"></mat-spinner>
+        <span *ngIf="!isLoading">{{ 'auth.login.submit' | translate }}</span>
+      </button>
+
+    </form>
+  </mat-card>
+</div>

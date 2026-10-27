@@ -1,0 +1,242 @@
+<div class="cat-container">
+  <!-- Cabeçalho -->
+  <header class="cat-header">
+    <div class="title-group">
+      <h1>Categorias do Catálogo</h1>
+      <p>Seções e subseções que organizam seus itens — e os campos extras que cada uma exige.</p>
+      <span class="cat-stats">
+        {{ stats.total }} seções · {{ stats.inactive }} inativa(s) ·
+        {{ stats.items }} itens cadastrados
+      </span>
+    </div>
+    <button class="btn-new" (click)="newCategory()">
+      <mat-icon>add</mat-icon>
+      Nova Categoria
+    </button>
+  </header>
+
+  <div class="cat-layout">
+    <!-- ═══ Coluna 1: árvore de seções ═══ -->
+    <section class="cat-tree-card">
+      <div class="tree-search">
+        <mat-icon>search</mat-icon>
+        <input
+          [value]="filter"
+          (input)="onFilterChange($any($event.target).value)"
+          placeholder="Filtrar seções..." />
+      </div>
+
+      <!-- Toolbar: família, status e ordenação -->
+      <div class="tree-toolbar">
+        <div class="toolbar-field">
+          <label>FAMÍLIA</label>
+          <select [value]="verticalFilter" (change)="onVerticalChange($any($event.target).value)">
+            <option value="">Todas</option>
+            <option *ngFor="let v of VERTICALS" [value]="v.value">{{ v.label }}</option>
+          </select>
+        </div>
+
+        <div class="toolbar-field">
+          <label>STATUS</label>
+          <select [value]="statusFilter" (change)="onStatusChange($any($event.target).value)">
+            <option value="">Todas</option>
+            <option value="active">Somente ativas</option>
+            <option value="inactive">Somente inativas</option>
+          </select>
+        </div>
+
+        <div class="toolbar-field">
+          <label>ORDENAR</label>
+          <select [value]="sortBy" (change)="onSortChange($any($event.target).value)">
+            <option value="name">Nome (A–Z)</option>
+            <option value="items">Nº de itens</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tree-list">
+        <div
+          *ngFor="let row of rows"
+          class="tree-row"
+          [class.selected]="selected?.id === row.cat.id"
+          [style.padding-left.px]="16 + row.level * 20"
+          (click)="select(row.cat)">
+          <mat-icon class="row-icon">
+            {{ row.cat.parentId ? 'subdirectory_arrow_right' : 'folder' }}
+          </mat-icon>
+          <div class="row-text">
+            <span class="row-name">{{ row.cat.name }}</span>
+            <span class="row-sub">
+              {{ verticalLabel(row.cat.vertical) }} · {{ row.cat.itemCount }} item(ns)
+            </span>
+          </div>
+          <span class="row-inactive" *ngIf="!row.cat.active" matTooltip="Seção inativa">
+            inativa
+          </span>
+          <button
+            class="row-delete"
+            (click)="$event.stopPropagation(); remove(row.cat)"
+            matTooltip="Excluir seção">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+
+        <div class="tree-empty" *ngIf="!rows.length">
+          <mat-icon>folder_off</mat-icon>
+          <span>Nenhuma seção encontrada.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Coluna 2: detalhe / edição ═══ -->
+    <section class="cat-detail-card" *ngIf="mode; else noSelection">
+      <div class="detail-header">
+        <h2>{{ mode === 'create' ? 'Nova Categoria' : 'Editar Categoria' }}</h2>
+      </div>
+
+      <form [formGroup]="form" class="detail-form">
+        <div class="form-grid">
+          <div class="field col-2">
+            <label>Nome da seção *</label>
+            <input formControlName="name" placeholder="ex.: Medicamentos" />
+          </div>
+
+          <div class="field">
+            <label>Seção pai (opcional)</label>
+            <select formControlName="parentId">
+              <option value="">— raiz —</option>
+              <option *ngFor="let p of parentOptions" [value]="p.id">{{ p.name }}</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Família de negócio *</label>
+            <select formControlName="vertical">
+              <option *ngFor="let v of VERTICALS" [value]="v.value">{{ v.label }}</option>
+            </select>
+            <small class="help-text">
+              Define o comportamento padrão da seção (sanitário, perigosos, grades...).
+            </small>
+          </div>
+
+          <div class="field check">
+            <mat-checkbox formControlName="active">Seção ativa</mat-checkbox>
+          </div>
+        </div>
+
+        <div class="detail-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
+          <button
+            type="button"
+            class="btn-save"
+            (click)="save()"
+            [disabled]="saving || form.invalid">
+            <mat-icon>save</mat-icon>
+            Salvar
+          </button>
+        </div>
+      </form>
+
+      <!-- ── Campos extras da seção (somente edição) ── -->
+      <div class="defs-section" *ngIf="mode === 'edit' && selected">
+        <div class="defs-header">
+          <h3>Campos extras desta seção</h3>
+          <button type="button" class="btn-add-def" (click)="toggleDefEditor()">
+            <mat-icon>{{ showDefEditor ? 'close' : 'add' }}</mat-icon>
+            {{ showDefEditor ? 'Fechar' : 'Adicionar campo' }}
+          </button>
+        </div>
+        <p class="help-text">
+          Estas "perguntas" aparecem no formulário do item quando esta categoria é
+          escolhida (ex.: Registro ANVISA em Medicamentos).
+        </p>
+
+        <div class="defs-list">
+          <div class="def-row" *ngFor="let def of defs">
+            <div class="def-info">
+              <span class="def-label">
+                {{ def.label }}<span class="req" *ngIf="def.required"> *</span>
+              </span>
+              <span class="def-sub">
+                {{ def.key }} · {{ dataTypeLabel(def.dataType) }} ·
+                {{ appliesToLabel(def.appliesTo) }}
+                <span *ngIf="def.unit"> · {{ def.unit }}</span>
+                <span *ngIf="def.options?.length"> · {{ def.options?.join(', ') }}</span>
+              </span>
+            </div>
+            <button class="def-delete" (click)="deleteDef(def)" matTooltip="Remover campo">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+
+          <p class="defs-empty" *ngIf="!defs.length && !showDefEditor">
+            Esta seção não possui campos extras.
+          </p>
+        </div>
+
+        <!-- Editor de novo campo -->
+        <form [formGroup]="defForm" class="def-editor" *ngIf="showDefEditor">
+          <div class="form-grid">
+            <div class="field col-2">
+              <label>Rótulo exibido *</label>
+              <input formControlName="label" placeholder="ex.: Registro ANVISA" />
+            </div>
+
+            <div class="field">
+              <label>Chave técnica (opcional)</label>
+              <input formControlName="key" placeholder="vazio = gerada do rótulo" />
+            </div>
+
+            <div class="field">
+              <label>Tipo *</label>
+              <select formControlName="dataType">
+                <option *ngFor="let t of DATA_TYPES" [value]="t.value">{{ t.label }}</option>
+              </select>
+            </div>
+
+            <div class="field" *ngIf="defForm.get('dataType')?.value === 'ENUM'">
+              <label>Opções (vírgula) *</label>
+              <input formControlName="options" placeholder="ex.: ABNT2, ANSI" />
+            </div>
+
+            <div class="field">
+              <label>Unidade</label>
+              <input formControlName="unit" placeholder="ex.: kg, h" />
+            </div>
+
+            <div class="field">
+              <label>Aplica-se a *</label>
+              <select formControlName="appliesTo">
+                <option *ngFor="let a of APPLIES_TO" [value]="a.value">{{ a.label }}</option>
+              </select>
+            </div>
+
+            <div class="field check">
+              <mat-checkbox formControlName="required">Obrigatório</mat-checkbox>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button
+              type="button"
+              class="btn-save"
+              (click)="saveDef()"
+              [disabled]="defForm.invalid">
+              <mat-icon>add</mat-icon>
+              Adicionar campo
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Estado vazio (nada selecionado) -->
+    <ng-template #noSelection>
+      <section class="cat-detail-card empty-detail">
+        <mat-icon>touch_app</mat-icon>
+        <h2>Selecione uma seção</h2>
+        <p>Clique em uma seção à esquerda para editar, ou crie uma nova.</p>
+      </section>
+    </ng-template>
+  </div>
+</div>

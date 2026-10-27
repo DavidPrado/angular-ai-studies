@@ -1,0 +1,292 @@
+.user-list-container {
+  padding: 32px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: "Open Sans", sans-serif;
+
+  // --- Cabeçalho Principal ---
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+
+    .title-group {
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        color: #32325d;
+        font-weight: 700;
+      }
+      p {
+        margin: 4px 0 0;
+        color: #8898aa;
+        font-size: 15px;
+      }
+    }
+
+    // Botão Azul "Novo Tenant"
+    .btn-new {
+      background: #5e72e4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+      transition: all 0.25s;
+
+      &:hover {
+        background: #324cdd;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
+      }
+    }
+  }
+
+  // --- Seção de Filtros ---
+  .filter-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+
+    .filter-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-end;
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        background: #f4f6f9;
+        padding: 0 16px;
+        border-radius: 8px;
+        flex: 2;
+        min-width: 300px;
+        height: 40px;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+
+        &:focus-within {
+          border-color: #5e72e4;
+          background: white;
+        }
+
+        mat-icon {
+          color: #adb5bd;
+          margin-right: 12px;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        input {
+          border: none;
+          background: transparent;
+          height: 100%;
+          width: 100%;
+          outline: none;
+          font-size: 13px;
+          color: #525f7f;
+        }
+      }
+
+      .select-box {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 180px;
+
+        mat-label {
+          font-size: 10px;
+          font-weight: 800;
+          color: #8898aa;
+          text-transform: uppercase;
+          margin-bottom: 6px;
+          letter-spacing: 0.025em;
+        }
+
+        select {
+          border: 1px solid #dee2e6;
+          border-radius: 8px;
+          height: 40px;
+          padding: 0 12px;
+          background: white;
+          color: #525f7f;
+          outline: none;
+          font-size: 13px;
+          cursor: pointer;
+
+          &:focus {
+            border-color: #5e72e4;
+          }
+        }
+      }
+
+      .btn-clear {
+        color: #5e72e4;
+        background: transparent;
+        border: 1px solid #5e72e4;
+        padding: 0 16px;
+        height: 40px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+
+        &:hover {
+          background: #f0f3ff;
+          color: #324cdd;
+          border-color: #324cdd;
+        }
+      }
+    }
+  }
+
+  // --- Tabela de Dados ---
+  .table-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+    overflow: hidden;
+
+    table {
+      width: 100%;
+    }
+
+    // Célula com Avatar + Nome (Tenant)
+    .user-info-cell {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+
+      .user-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #5e72e4; // Mesmo azul para manter consistência
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .user-text {
+        display: flex;
+        flex-direction: column;
+        .user-name {
+          font-weight: 700;
+          color: #32325d;
+          font-size: 14px;
+        }
+        .user-subtext {
+          font-size: 12px;
+          color: #8898aa;
+        }
+      }
+    }
+
+    // Badge de Status (Ativo/Inativo)
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+
+      &.active {
+        background: #d7f5e1;
+        color: #2dce89;
+      }
+
+      &.inactive {
+        background: #fce3e3;
+        color: #f5365c;
+      }
+    }
+
+    // Ações da Tabela
+    .table-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+
+      .btn-action {
+        background: transparent;
+        border: none;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        color: #adb5bd;
+        transition: all 0.2s;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        &.edit:hover {
+          color: #5e72e4; // Lápis azul
+          background: #f0f3ff;
+        }
+
+        &.delete:hover {
+          color: #f5365c; // Bloqueio/Lixeira vermelha
+          background: #fee7eb;
+        }
+      }
+    }
+
+    .user-row:hover {
+      background-color: #f8f9fe;
+    }
+  }
+
+  // --- Estado Vazio ---
+  .empty-state-cell {
+    padding: 60px 0;
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #adb5bd;
+      mat-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+      }
+      span {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Utilitário para badges de roles (usado no subdomain)
+.role-badge {
+  background: #f4f6f9;
+  color: #5e72e4;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}

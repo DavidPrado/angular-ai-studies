@@ -1,0 +1,107 @@
+<div class="operations-center">
+  <header class="page-header">
+    <div class="title-group">
+      <h1>Central de Operações</h1>
+      <p>Acompanhe suas importações e exportações em tempo real.</p>
+    </div>
+    <div class="actions">
+      <button mat-stroked-button (click)="loadJobs()" [disabled]="loading">
+        <mat-icon>refresh</mat-icon>
+        Atualizar
+      </button>
+    </div>
+  </header>
+
+  <!-- KPIs -->
+  <section class="kpi-section">
+    <div class="kpi-card">
+      <mat-icon class="kpi-icon primary">folder</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ jobs.length }}</span>
+        <span class="kpi-label">Total de operações</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <mat-icon class="kpi-icon processing">sync</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ getActiveJobsCount() }}</span>
+        <span class="kpi-label">Em processamento</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <mat-icon class="kpi-icon success">check_circle</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ getSuccessJobsCount() }}</span>
+        <span class="kpi-label">Concluídas</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <mat-icon class="kpi-icon error">error</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ getFailedJobsCount() }}</span>
+        <span class="kpi-label">Com erros</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <section class="filter-card">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Tipo de Operação</label>
+        <mat-select [(value)]="operationFilter" (selectionChange)="applyFilters()">
+          <mat-option value="ALL">Todas</mat-option>
+          <mat-option value="IMPORT">Importações</mat-option>
+          <mat-option value="EXPORT">Exportações</mat-option>
+        </mat-select>
+      </div>
+
+      <div class="filter-group">
+        <label>Status</label>
+        <mat-select [(value)]="statusFilter" (selectionChange)="applyFilters()">
+          <mat-option value="ALL">Todos</mat-option>
+          <mat-option value="QUEUED">Na fila</mat-option>
+          <mat-option value="PROCESSING">Processando</mat-option>
+          <mat-option value="DONE">Concluído</mat-option>
+          <mat-option value="PARTIAL">Parcial</mat-option>
+          <mat-option value="FAILED">Falhou</mat-option>
+          <mat-option value="CANCELLED">Cancelado</mat-option>
+        </mat-select>
+      </div>
+
+      <button mat-stroked-button (click)="clearFilters()">
+        <mat-icon>clear</mat-icon>
+        Limpar Filtros
+      </button>
+    </div>
+  </section>
+
+  <!-- Indicador de polling -->
+  <div class="polling-indicator" *ngIf="isPolling">
+    <mat-icon class="spin">sync</mat-icon>
+    <span>Atualizando em tempo real...</span>
+  </div>
+
+  <!-- Lista de jobs -->
+  <section class="jobs-list">
+    <div class="empty-state" *ngIf="!loading && filteredJobs.length === 0">
+      <mat-icon>inventory_2</mat-icon>
+      <span>Nenhuma operação encontrada.</span>
+      <span class="empty-hint">Suas importações e exportações aparecerão aqui.</span>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Carregando operações...</span>
+    </div>
+
+    <app-bulk-job-card
+      *ngFor="let job of filteredJobs"
+      [job]="job"
+      (cancel)="cancelJob($event)">
+    </app-bulk-job-card>
+  </section>
+</div>

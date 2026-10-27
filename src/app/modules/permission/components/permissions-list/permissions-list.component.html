@@ -1,0 +1,46 @@
+<div class="page-layout">
+  <div class="page-header">
+    <div class="header-titles">
+      <h2>Catálogo de Permissões</h2>
+      <p>
+        Consulta somente leitura — {{ totalCount }} permissões registradas.
+        Manutenção é realizada pelo time técnico via migration.
+      </p>
+    </div>
+  </div>
+
+  <div class="card-section">
+    <div class="toolbar">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Buscar por nome, descrição ou categoria..."
+          [value]="filter"
+          (input)="onFilterChange($event)"
+        />
+      </div>
+    </div>
+
+    <div class="permission-groups" *ngIf="grouped.length; else empty">
+      <div class="permission-group" *ngFor="let group of grouped">
+        <div class="group-header">
+          <mat-icon>category</mat-icon>
+          <span class="group-title">{{ group.category }}</span>
+          <span class="group-count">{{ group.items.length }} permissão(ões)</span>
+        </div>
+
+        <div class="group-items">
+          <div class="permission-card" *ngFor="let perm of group.items">
+            <div class="perm-name">{{ perm.name }}</div>
+            <div class="perm-desc">{{ perm.description || 'Sem descrição.' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #empty>
+      <p class="empty">Nenhuma permissão encontrada para o filtro informado.</p>
+    </ng-template>
+  </div>
+</div>

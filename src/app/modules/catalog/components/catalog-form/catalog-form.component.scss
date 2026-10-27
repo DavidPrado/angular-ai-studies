@@ -1,0 +1,319 @@
+.catalog-form-container {
+  padding: 32px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: "Open Sans", sans-serif;
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    .title-group {
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        color: #32325d;
+        font-weight: 700;
+      }
+      p {
+        margin: 4px 0 0;
+        color: #8898aa;
+        font-size: 15px;
+      }
+    }
+    .action-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-cancel {
+      background: white;
+      border: 1px solid #dee2e6;
+      color: #525f7f;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      &:hover {
+        background: #f4f6f9;
+      }
+    }
+    .btn-save {
+      background: #5e72e4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+      transition: all 0.25s;
+      &:hover:not(:disabled) {
+        background: #324cdd;
+        transform: translateY(-2px);
+      }
+      &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      .zone-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #5e72e4;
+        color: white;
+        font-weight: 800;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #32325d;
+        font-weight: 700;
+      }
+      .btn-add-variant {
+        margin-left: auto;
+        background: #eef2ff;
+        color: #324cdd;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+        &:hover {
+          background: #dfe6ff;
+        }
+      }
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .col-span-2 {
+    grid-column: span 2;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #8898aa;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      .req {
+        color: #f5365c;
+      }
+      .unit {
+        color: #adb5bd;
+        font-weight: 600;
+      }
+    }
+    input,
+    select {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #525f7f;
+      outline: none;
+      transition: border-color 0.2s;
+      &:focus {
+        border-color: #5e72e4;
+      }
+      &.readonly {
+        background: #f4f6f9;
+        color: #8898aa;
+        cursor: not-allowed;
+      }
+    }
+    .help-text {
+      color: #adb5bd;
+      font-size: 11px;
+    }
+    .error-text {
+      color: #f5365c;
+      font-size: 11px;
+    }
+  }
+
+  .margin-display {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2dce89;
+    padding: 6px 0;
+    &.negative {
+      color: #f5365c;
+    }
+  }
+
+  .checks-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 8px;
+  }
+
+  .extra-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .zone-hint {
+    color: #8898aa;
+    font-size: 13px;
+    margin: 4px 0;
+  }
+
+  .variants-table {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .ai-enrichment-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #f0f3ff;
+    border-radius: 8px;
+    border: 1px dashed #5e72e4;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .ai-hint {
+      font-size: 12px;
+      color: #5e72e4;
+      font-weight: 600;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .variant-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    background: #f8f9fe;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px;
+
+    .variant-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+      label {
+        font-size: 10px;
+        font-weight: 800;
+        color: #8898aa;
+        text-transform: uppercase;
+      }
+      input {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 12.5px;
+        color: #525f7f;
+        outline: none;
+        width: 100%;
+        &:focus {
+          border-color: #5e72e4;
+        }
+      }
+      &.adjust {
+        flex: 0 0 130px;
+      } // ★ largura fixa da coluna de ajuste
+      &.grow {
+        flex: 2;
+      }
+      &.small {
+        width: 100px;
+      }
+    }
+
+    // ★ alinhamento vertical do checkbox "Ativa"
+    > mat-checkbox {
+      padding-bottom: 10px;
+      white-space: nowrap;
+    }
+
+    // ★ NOME CORRETO da classe usada no HTML (era .btn-remove-variant)
+    .variant-remove {
+      background: transparent;
+      border: none; // ← adeus, quadrado com borda
+      color: #adb5bd;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      transition: all 0.15s;
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      &:hover {
+        color: #f5365c;
+        background: #fee7eb;
+      }
+    }
+  }
+}

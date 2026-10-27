@@ -1,0 +1,141 @@
+<div class="role-form-container">
+  <!-- Cabeçalho -->
+  <header class="form-header">
+    <div class="title-group">
+      <h1>{{ isEditMode ? "Editar Perfil" : "Novo Perfil" }}</h1>
+      <p>
+        Defina a identificação do perfil e selecione as permissões de acesso.
+      </p>
+    </div>
+    <div class="action-group">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn-save"
+        (click)="onSubmit()"
+        [disabled]="!canSave"
+      >
+        <mat-icon>save</mat-icon>
+        Salvar Perfil
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="roleForm">
+    <!-- BLOCO 1: Identificação -->
+    <section class="form-card">
+      <div class="card-header">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <h3>Identificação do Perfil</h3>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Nome de Exibição *</label>
+          <input
+            formControlName="displayName"
+            placeholder="Ex: Gestor Financeiro"
+            (input)="suggestTechnicalName()"
+          />
+          <small
+            class="error-text"
+            *ngIf="
+              roleForm.get('displayName')?.invalid &&
+              roleForm.get('displayName')?.touched
+            "
+          >
+            Informe ao menos 3 caracteres.
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Nome Técnico *</label>
+          <input
+            formControlName="name"
+            placeholder="ROLE_FINANCE_MANAGER"
+            [readonly]="isEditMode"
+            [class.readonly]="isEditMode"
+          />
+          <small class="help-text">
+            {{
+              isEditMode
+                ? "Nome técnico é imutável após a criação."
+                : "Gerado automaticamente a partir do nome de exibição."
+            }}
+          </small>
+        </div>
+
+        <div class="field col-span-2">
+          <label>Descrição</label>
+          <input
+            formControlName="description"
+            placeholder="Descreva a finalidade do perfil"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCO 2: Matriz de permissões -->
+    <section class="form-card">
+      <div class="card-header">
+        <mat-icon>verified_user</mat-icon>
+        <h3>Permissões de Acesso</h3>
+        <span class="selected-count" [class.invalid]="selectedCount === 0">
+          {{ selectedCount }} selecionada(s)
+        </span>
+      </div>
+
+      <div class="permission-toolbar">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Buscar permissão por nome ou descrição..."
+          [value]="permissionFilter"
+          (input)="onFilterChange($event)"
+        />
+      </div>
+
+      <div
+        class="permission-groups"
+        *ngIf="groupedPermissions.length; else noPerms"
+      >
+        <div class="permission-group" *ngFor="let group of groupedPermissions">
+          <div class="group-header">
+            <mat-checkbox
+              [checked]="allSelectedIn(group.items)"
+              [indeterminate]="indeterminateIn(group.items)"
+              (change)="toggleItems(group.items, $event.checked!)"
+            >
+              <span class="group-title">{{ group.category }}</span>
+            </mat-checkbox>
+            <span class="group-count">
+              {{ countSelectedIn(group.items) }}/{{ group.items.length }}
+            </span>
+          </div>
+
+          <div class="group-items">
+            <div class="permission-item" *ngFor="let perm of group.items">
+              <mat-checkbox
+                [checked]="isSelected(perm.id)"
+                (change)="togglePermission(perm.id, $event.checked!)"
+              >
+                <div class="perm-text">
+                  <span class="perm-name">{{ perm.name }}</span>
+                  <span class="perm-desc">{{ perm.description }}</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noPerms>
+        <p class="empty">
+          Nenhuma permissão encontrada para o filtro informado.
+        </p>
+      </ng-template>
+    </section>
+  </form>
+</div>

@@ -1,0 +1,194 @@
+.form-container {
+  padding: 32px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+
+  .form-header {
+    margin-bottom: 32px;
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #32325d;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      p {
+        margin: 0;
+        color: #8898aa;
+        font-size: 14px;
+      }
+    }
+
+    .btn-back {
+      background: white;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+      color: #5e72e4;
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateX(-3px);
+        color: #324cdd;
+        background-color: #f6f9fc;
+      }
+    }
+  }
+
+  .form-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15) !important;
+    margin-bottom: 24px;
+    background: white;
+    overflow: hidden;
+
+    mat-card-header {
+      margin-bottom: 20px;
+
+      mat-card-title {
+        font-weight: 700;
+        color: #32325d;
+        font-size: 18px;
+      }
+
+      mat-icon[mat-card-avatar] {
+        background-color: #f6f9fc;
+        padding: 8px;
+        border-radius: 8px;
+        color: #5e72e4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 8px;
+
+    span[matSuffix] {
+      color: #adb5bd;
+      font-weight: 600;
+      font-size: 13px;
+      padding-right: 8px;
+    }
+  }
+
+  .status-box {
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    .status-label {
+      font-weight: 600;
+      color: #4a5568;
+    }
+  }
+
+  /* --- SEÇÃO DE AÇÕES (AZUL SÓLIDO) --- */
+
+  .actions-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 32px !important;
+    background-color: #fcfdfe;
+    border-top: 1px solid #edf2f7;
+  }
+
+  .btn-save {
+    background-color: #5e72e4 !important;
+    color: #ffffff !important;
+
+    /* --- CORREÇÃO DE NITIDEZ --- */
+    font-family: "Open Sans", sans-serif; // Ou a fonte que estiver usando
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.5px !important; // Dá espaço para as letras respirarem
+    -webkit-font-smoothing: antialiased; // Força nitidez no Chrome/Safari
+    -moz-osx-font-smoothing: grayscale; // Força nitidez no Firefox
+    text-rendering: optimizeLegibility; // Melhora a renderização geral
+    /* --------------------------- */
+
+    height: 50px !important;
+    padding: 0 32px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(94, 114, 228, 0.2) !important;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease !important; // Evite transitar o 'filter' ou 'box-shadow' se possível
+
+    &:hover:not(:disabled) {
+      background-color: #4359e0 !important;
+      transform: translateY(-1px); // Movimento sutil para não borrar
+    }
+
+    &:disabled {
+      background-color: #e2e8f0 !important;
+      color: #94a3b8 !important;
+      transform: none !important;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      // Garante que o ícone também não fique embaçado
+      image-rendering: -webkit-optimize-contrast;
+    }
+  }
+
+  .btn-cancel {
+    color: #64748b !important; // Um pouco mais escuro para contraste
+    font-weight: 700 !important; // Aumentado para nitidez
+    font-size: 15px !important;
+    letter-spacing: 0.3px !important;
+    height: 50px !important;
+    padding: 0 24px !important;
+    border-radius: 8px !important; // Mesmo raio do botão salvar (retangular)
+    border: 1.5px solid transparent !important;
+    transition: all 0.2s ease !important;
+    -webkit-font-smoothing: antialiased;
+
+    &:hover {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    &:active {
+      background-color: #f8fafc !important;
+      border-color: #94a3b8 !important;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .form-container {
+    padding: 16px;
+
+    .actions-container {
+      flex-direction: column-reverse;
+      padding: 16px !important;
+
+      button {
+        width: 100% !important;
+        margin: 0 !important;
+      }
+    }
+  }
+}

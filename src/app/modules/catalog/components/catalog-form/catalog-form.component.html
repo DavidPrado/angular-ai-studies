@@ -1,0 +1,452 @@
+<div class="catalog-form-container">
+  <!-- Cabeçalho -->
+  <header class="form-header">
+    <div class="title-group">
+      <h1>{{ isEditMode ? "Editar Item" : "Novo Item" }}</h1>
+      <p>
+        {{
+          isEditMode
+            ? "Ajuste os dados do item. SKU e tipo não mudam após a criação."
+            : "Cadastre um produto ou serviço. O SKU é gerado automaticamente se ficar vazio."
+        }}
+      </p>
+    </div>
+    <div class="action-group">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn-save"
+        (click)="onSubmit()"
+        [disabled]="!canSave"
+      >
+        <mat-icon>save</mat-icon>
+        Salvar Item
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="itemForm">
+    <!-- ══ ZONA 1 — IDENTIFICAÇÃO ══ -->
+    <section class="form-card">
+      <div class="card-header">
+        <span class="zone-number">1</span>
+        <h3>Identificação</h3>
+      </div>
+      <div class="form-grid">
+        <div class="field col-span-2">
+          <label>Nome do item *</label>
+          <input
+            formControlName="name"
+            placeholder="ex.: Café Especial Torra Média"
+          />
+          <small
+            class="error-text"
+            *ngIf="
+              itemForm.get('name')?.invalid && itemForm.get('name')?.touched
+            "
+          >
+            Informe ao menos 3 caracteres.
+          </small>
+
+          <!-- ★ NOVO: Usando os getters seguros -->
+          <div class="ai-enrichment-row" *ngIf="canUseAiEnrichment">
+            <app-ai-enrichment-button
+              [productName]="nameValue"
+              [productDescription]="descriptionValue"
+              (enriched)="onAiEnriched($event)"
+            >
+            </app-ai-enrichment-button>
+            <span class="ai-hint">
+              💡 Clique para preencher categoria e descrição automaticamente
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tipo *</label>
+          <select
+            formControlName="itemType"
+            (change)="onTypeChange()"
+            [disabled]="isEditMode"
+          >
+            <option value="PRODUCT">Produto (físico)</option>
+            <option value="SERVICE">Serviço</option>
+          </select>
+          <small class="help-text" *ngIf="isEditMode"
+            >Tipo é imutável após a criação.</small
+          >
+        </div>
+
+        <div class="field">
+          <label>Categoria *</label>
+          <select formControlName="categoryId" (change)="onCategoryChange()">
+            <option value="">Selecione a seção...</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">
+              {{ cat.name }}
+            </option>
+          </select>
+          <small class="help-text"
+            >A categoria define os campos extras da zona 5.</small
+          >
+        </div>
+
+        <div class="field col-span-2">
+          <label>Descrição</label>
+          <textarea 
+            formControlName="description" 
+            rows="3"
+            placeholder="Dica: Digite especificações brutas aqui (ex: '16000 dpi, 6 botões, bateria 70h') e use o botão acima para refinar.">
+          </textarea>
+          
+          <!-- O botão de IA fica logo abaixo da descrição, não do nome -->
+          <div class="ai-enrichment-row" *ngIf="canUseAiEnrichment">
+            <app-ai-enrichment-button
+              [productName]="nameValue"
+              [productDescription]="descriptionValue"
+              (enriched)="onAiEnriched($event)">
+            </app-ai-enrichment-button>
+            <span class="ai-hint">
+              {{ descriptionValue.length > 5 ? 'Clique para refinar e profissionalizar o texto.' : 'Clique para gerar uma descrição técnica completa.' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>SKU (código interno)</label>
+          <input
+            formControlName="sku"
+            placeholder="ex.: PRD-000123 (vazio = gerado)"
+            [readonly]="isEditMode"
+            [class.readonly]="isEditMode"
+          />
+          <small class="help-text">
+            {{
+              isEditMode
+                ? "SKU é imutável após a criação."
+                : "Deixe vazio para gerar automaticamente."
+            }}
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Código de barras (EAN)</label>
+          <input formControlName="ean" placeholder="ex.: 7891234567895" />
+          <small
+            class="help-text"
+            matTooltip="É o código que a maquininha lê. O dígito verificador é validado automaticamente."
+          >
+            Opcional · 13 ou 14 dígitos ℹ️
+          </small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ZONA 2 — PREÇOS ══ -->
+    <section class="form-card">
+      <div class="card-header">
+        <span class="zone-number">2</span>
+        <h3>Preços e unidade</h3>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Unidade de medida *</label>
+          <select formControlName="unitOfMeasure">
+            <option *ngFor="let u of UNITS" [value]="u.value">
+              {{ u.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Preço de venda *</label>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            formControlName="salePrice"
+            placeholder="ex.: 349.90"
+          />
+        </div>
+
+        <div class="field">
+          <label>Preço de custo *</label>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            formControlName="costPrice"
+            placeholder="ex.: 210.00"
+          />
+        </div>
+
+        <div class="field">
+          <label>Margem (calculada)</label>
+          <div class="margin-display" [class.negative]="marginPercent <= 0">
+            {{ marginPercent }}%
+          </div>
+          <small class="help-text"
+            >Calculada automaticamente: (venda − custo) ÷ venda.</small
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ZONA 3 — FISCAL (muda conforme o tipo) ══ -->
+    <section class="form-card">
+      <div class="card-header">
+        <span class="zone-number">3</span>
+        <h3>Dados fiscais</h3>
+      </div>
+
+      <!-- Produto -->
+      <div class="form-grid" *ngIf="!isService; else serviceFiscal">
+        <div class="field">
+          <label>NCM</label>
+          <input formControlName="ncm" placeholder="ex.: 8471.60.52" />
+          <small
+            class="help-text"
+            matTooltip="É o 'RG fiscal' do produto no Mercosul — define os impostos da nota. Não sabe? Deixe vazio e revise depois."
+          >
+            Classificação fiscal da mercadoria ℹ️
+          </small>
+        </div>
+        <div class="field">
+          <label>CEST</label>
+          <input formControlName="cest" placeholder="ex.: 0000000" />
+        </div>
+        <div class="field">
+          <label>Origem</label>
+          <input formControlName="taxOrigin" placeholder="0 = nacional" />
+        </div>
+        <div class="field">
+          <label>CST ICMS</label>
+          <input formControlName="cstIcms" placeholder="ex.: 00" />
+        </div>
+        <div class="field">
+          <label>CSOSN (Simples)</label>
+          <input formControlName="csosn" placeholder="ex.: 102" />
+        </div>
+      </div>
+
+      <!-- Serviço -->
+      <ng-template #serviceFiscal>
+        <div class="form-grid">
+          <div class="field">
+            <label>Item da Lista LC 116</label>
+            <input formControlName="serviceCode" placeholder="ex.: 17.12" />
+            <small
+              class="help-text"
+              matTooltip="Código do serviço na lista oficial da LC 116/2003 — define o ISS da NFS-e."
+            >
+              Código do serviço p/ ISS ℹ️
+            </small>
+          </div>
+          <div class="field">
+            <label>Alíquota ISS (%)</label>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              formControlName="issRate"
+              placeholder="ex.: 5.00"
+            />
+          </div>
+        </div>
+      </ng-template>
+    </section>
+
+    <!-- ══ ZONA 4 — CONTROLES E REPOSIÇÃO ══ -->
+    <section class="form-card">
+      <div class="card-header">
+        <span class="zone-number">4</span>
+        <h3>Controles e reposição</h3>
+      </div>
+
+      <div class="checks-row">
+        <mat-checkbox formControlName="tracksBatch" [disabled]="isService">
+          Controla lote?
+        </mat-checkbox>
+        <mat-checkbox formControlName="tracksExpiry" [disabled]="isService">
+          Controla validade?
+        </mat-checkbox>
+        <mat-checkbox formControlName="isHazardous">
+          Produto perigoso?
+        </mat-checkbox>
+      </div>
+      <small class="help-text">
+        Lote/validade habilitam rastreio e alerta de vencimento no estoque.
+        "Perigoso" liga regras especiais de transporte.
+      </small>
+
+      <div class="form-grid" *ngIf="!isService">
+        <div class="field">
+          <label>Estoque mínimo</label>
+          <input
+            type="number"
+            min="0"
+            formControlName="minStock"
+            placeholder="ex.: 5"
+          />
+        </div>
+        <div class="field">
+          <label>Estoque máximo</label>
+          <input
+            type="number"
+            min="0"
+            formControlName="maxStock"
+            placeholder="ex.: 50"
+          />
+        </div>
+        <div class="field">
+          <label>Ponto de pedido</label>
+          <input
+            type="number"
+            min="0"
+            formControlName="reorderStock"
+            placeholder="ex.: 10"
+          />
+          <small
+            class="help-text"
+            matTooltip="Quando o estoque chegar a este número, o sistema sugere reposição."
+          >
+            Saldo que dispara a reposição ℹ️
+          </small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ZONA 5 — CAMPOS EXTRAS DA CATEGORIA ══ -->
+    <section class="form-card">
+      <div class="card-header">
+        <span class="zone-number">5</span>
+        <h3>Dados específicos da categoria</h3>
+      </div>
+
+      <div
+        class="extra-grid"
+        [formGroup]="extraForm"
+        *ngIf="visibleDefs.length; else noDefs"
+      >
+        <div class="field" *ngFor="let def of visibleDefs">
+          <label>
+            {{ def.label }}<span class="req" *ngIf="def.required"> *</span>
+            <span class="unit" *ngIf="def.unit"> ({{ def.unit }})</span>
+          </label>
+
+          <input *ngIf="def.dataType === 'TEXT'" [formControlName]="def.key" />
+          <input
+            *ngIf="def.dataType === 'NUMBER'"
+            type="number"
+            [formControlName]="def.key"
+          />
+          <input
+            *ngIf="def.dataType === 'DATE'"
+            type="date"
+            [formControlName]="def.key"
+          />
+
+          <mat-checkbox
+            *ngIf="def.dataType === 'BOOLEAN'"
+            [formControlName]="def.key"
+          >
+            Sim
+          </mat-checkbox>
+
+          <select *ngIf="def.dataType === 'ENUM'" [formControlName]="def.key">
+            <option value="">Selecione...</option>
+            <option *ngFor="let opt of def.options" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+
+          <small
+            class="error-text"
+            *ngIf="
+              def.required &&
+              extraForm.get(def.key)?.invalid &&
+              extraForm.get(def.key)?.touched
+            "
+          >
+            Campo obrigatório para esta categoria.
+          </small>
+        </div>
+      </div>
+
+      <ng-template #noDefs>
+        <p class="zone-hint">
+          {{
+            itemForm.get("categoryId")?.value
+              ? "Esta categoria não possui campos extras."
+              : "Escolha uma categoria na zona 1 para ver os campos extras dela (ex.: Registro ANVISA)."
+          }}
+        </p>
+      </ng-template>
+    </section>
+
+    <!-- ══ ZONA 6 — VARIANTES (somente produto) ══ -->
+    <section class="form-card" *ngIf="!isService">
+      <div class="card-header">
+        <span class="zone-number">6</span>
+        <h3>Variantes (grade)</h3>
+        <button type="button" class="btn-add-variant" (click)="addVariant()">
+          <mat-icon>add</mat-icon> Adicionar variante
+        </button>
+      </div>
+
+      <p class="zone-hint">
+        Versões vendáveis do mesmo item (tamanho, cor, embalagem). Cada variante
+        tem SKU próprio — é ele que sai na nota e na etiqueta. Sem grade? Deixe
+        vazio.
+      </p>
+
+      <div
+        class="variants-table"
+        formArrayName="variants"
+        *ngIf="variantsArray.length"
+      >
+        <div
+          class="variant-row"
+          *ngFor="let v of variantsArray.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div class="variant-field">
+            <label>SKU DA VARIANTE *</label>
+            <input formControlName="sku" placeholder="CAF-250" />
+          </div>
+
+          <div class="variant-field">
+            <label>GRADE</label>
+            <input formControlName="grade" placeholder="250g" />
+          </div>
+
+          <div class="variant-field">
+            <label>EAN</label>
+            <input formControlName="ean" placeholder="opcional" />
+          </div>
+
+          <!-- ★ O input de ajuste PRECISA estar bound ao controle -->
+          <div class="variant-field adjust">
+            <label>AJUSTE R$</label>
+            <input
+              type="number"
+              step="0.01"
+              formControlName="priceAdjustment"
+            />
+          </div>
+
+          <mat-checkbox formControlName="active">Ativa</mat-checkbox>
+
+          <button
+            type="button"
+            class="variant-remove"
+            (click)="removeVariant(i)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

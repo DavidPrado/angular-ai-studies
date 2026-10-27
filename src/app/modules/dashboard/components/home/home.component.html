@@ -1,0 +1,161 @@
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="logo">
+      <mat-icon color="primary">lightbulb</mat-icon>
+      <div class="logo-text">
+        <span class="brand">{{ "app.name" | translate }}</span>
+        <span class="tagline">{{ "app.tagline" | translate }}</span>
+      </div>
+    </div>
+
+    <nav>
+      <!-- Dashboard -->
+      <a
+        class="menu-link"
+        routerLink="/v1"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>dashboard</mat-icon>
+        <div class="menu-item-text">
+          <span class="menu-item-label">{{ "menu.dashboard" | translate }}</span>
+          <span class="menu-item-desc">{{ "menu.dashboard_desc" | translate }}</span>
+        </div>
+      </a>
+
+      <!-- 🔎 Busca -->
+      <div class="menu-search">
+        <mat-icon>search</mat-icon>
+        <input
+          #menuSearch
+          type="text"
+          (input)="onSearch(menuSearch.value)"
+          [placeholder]="'menu.search_placeholder' | translate" />
+      </div>
+
+      <!-- Zonas -->
+      <ng-container *ngFor="let zone of visibleZones">
+        <div class="nav-section">{{ zone.labelKey | translate }}</div>
+
+        <ng-container *ngFor="let item of zone.entries; trackBy: trackByLabelKey">
+          <!-- ── PAI COM SUBMENU: seta que gira ── -->
+          <ng-container *ngIf="item.children?.length; else leafTpl">
+            <button
+              type="button"
+              class="menu-link parent"
+              [class.expanded]="isExpanded(item)"
+              (click)="toggle(item)">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <div class="menu-item-text">
+                <span class="menu-item-label">{{ item.labelKey | translate }}</span>
+                <span class="menu-item-desc">{{ item.descKey | translate }}</span>
+              </div>
+              <mat-icon class="expand-arrow">chevron_right</mat-icon>
+            </button>
+
+            <div class="sub-menu" *ngIf="isExpanded(item)">
+              <ng-container *ngFor="let child of item.children; trackBy: trackByLabelKey">
+                <a
+                  *ngIf="child.available !== false"
+                  class="menu-link sub"
+                  [routerLink]="child.route"
+                  routerLinkActive="active">
+                  <div class="menu-item-text">
+                    <span class="menu-item-label">{{ child.labelKey | translate }}</span>
+                    <span class="menu-item-desc">{{ child.descKey | translate }}</span>
+                  </div>
+                </a>
+                <a *ngIf="child.available === false" class="menu-link sub coming-soon">
+                  <div class="menu-item-text">
+                    <span class="menu-item-label">{{ child.labelKey | translate }}</span>
+                    <span class="menu-item-desc">{{ child.descKey | translate }}</span>
+                  </div>
+                  <span class="soon-badge">{{ "menu.soon" | translate }}</span>
+                </a>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <!-- ── ITEM SEM FILHOS ── -->
+          <ng-template #leafTpl>
+            <a
+              *ngIf="item.available !== false"
+              class="menu-link"
+              [routerLink]="item.route"
+              routerLinkActive="active">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <div class="menu-item-text">
+                <span class="menu-item-label">{{ item.labelKey | translate }}</span>
+                <span class="menu-item-desc">{{ item.descKey | translate }}</span>
+              </div>
+            </a>
+            <a *ngIf="item.available === false" class="menu-link coming-soon">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <div class="menu-item-text">
+                <span class="menu-item-label">{{ item.labelKey | translate }}</span>
+                <span class="menu-item-desc">{{ item.descKey | translate }}</span>
+              </div>
+              <span class="soon-badge">{{ "menu.soon" | translate }}</span>
+            </a>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+
+      <p class="menu-empty" *ngIf="!visibleZones.length">
+        {{ "menu.no_results" | translate }}
+      </p>
+    </nav>
+
+    <div class="sidebar-footer">Moviment Tech · v1.0</div>
+  </aside>
+
+  <!-- ═══ DAQUI PRA BAIXO: IDÊNTICO AO QUE JÁ FUNCIONA ═══ -->
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          [placeholder]="'header.search_placeholder' | translate" />
+      </div>
+
+      <div class="user-actions">
+        <button mat-icon-button [matMenuTriggerFor]="langMenu">
+          <mat-icon>translate</mat-icon>
+        </button>
+        <mat-menu #langMenu="matMenu">
+          <button mat-menu-item (click)="changeLang('pt')">🇧🇷 Português</button>
+          <button mat-menu-item (click)="changeLang('en')">🇺 English</button>
+          <button mat-menu-item (click)="changeLang('es')">🇪 Español</button>
+        </mat-menu>
+
+        <mat-icon class="action-icon">mail_outline</mat-icon>
+        <mat-icon class="action-icon">notifications_none</mat-icon>
+
+        <div class="user-profile" routerLink="/v1/configuracoes/perfil">
+          <img
+            *ngIf="hasPhoto"
+            [src]="avatarUrl"
+            (error)="onAvatarError()"
+            alt="User"
+            class="avatar" />
+          <div *ngIf="!hasPhoto" class="avatar avatar-fallback">
+            <mat-icon>person</mat-icon>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="content-view">
+      <router-outlet></router-outlet>
+      @if (isHome) {
+        <div class="welcome-section">
+          <h2>
+            {{ "welcome.title" | translate: { name: "David Stefani Prado" } }}
+          </h2>
+          <p>{{ "welcome.subtitle" | translate }}</p>
+        </div>
+        <div class="insights-grid"></div>
+      }
+    </section>
+  </main>
+</div>

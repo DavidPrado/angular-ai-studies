@@ -1,0 +1,488 @@
+.cat-container {
+  padding: 32px;
+  background-color: transparent;
+  min-height: 100%;
+  font-family: "Open Sans", sans-serif;
+
+  // ═══ CABEÇALHO ═══════════════════════════════════════════
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+
+    .title-group {
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        color: #32325d;
+        font-weight: 700;
+      }
+      p {
+        margin: 4px 0 0;
+        color: #8898aa;
+        font-size: 15px;
+      }
+
+      .cat-stats {
+        display: inline-block;
+        margin-top: 8px;
+        background: #eef2ff;
+        color: #324cdd;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 12px;
+      }
+    }
+
+    .btn-new {
+      background: #5e72e4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+      transition: all 0.25s;
+      &:hover {
+        background: #324cdd;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  // ═══ Layout 2 colunas ═════════════════════════════════════
+  .cat-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  // ═══ ÁRVORE ═══════════════════════════════════════════════
+  .cat-tree-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+    overflow: hidden;
+
+    .tree-search {
+      display: flex;
+      align-items: center;
+      background: #f4f6f9;
+      margin: 16px 16px 10px;
+      padding: 0 14px;
+      border-radius: 8px;
+      height: 38px;
+      border: 1px solid transparent;
+      &:focus-within {
+        border-color: #5e72e4;
+        background: white;
+      }
+      mat-icon {
+        color: #adb5bd;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+      }
+      input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 100%;
+        font-size: 13px;
+        color: #525f7f;
+      }
+    }
+
+    // Toolbar de filtros/ordenação
+    .tree-toolbar {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 0 16px 12px;
+
+      .toolbar-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1 1 0; // distribui o espaço igualmente
+        min-width: 0; // ★ permite encolher abaixo da opção mais larga do select
+
+        label {
+          font-size: 9.5px;
+          font-weight: 800;
+          color: #8898aa;
+          text-transform: uppercase;
+        }
+
+        select {
+          width: 100%; // ★ ocupa o field, truncando o texto interno se preciso
+          border: 1px solid #dee2e6;
+          border-radius: 8px;
+          height: 34px;
+          padding: 0 8px;
+          background: white;
+          color: #525f7f;
+          font-size: 12px;
+          outline: none;
+          cursor: pointer;
+          &:focus {
+            border-color: #5e72e4;
+          }
+        }
+      }
+
+      .toolbar-check {
+        flex: 0 0 auto; // ★ nunca encolhe
+        white-space: nowrap; // ★ "Inativas" não quebra nem trunca
+        padding-bottom: 7px;
+        ::ng-deep .mat-mdc-checkbox-label {
+          font-size: 12px;
+          color: #525f7f;
+        }
+      }
+    }
+
+    .tree-list {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-bottom: 12px;
+    }
+
+    .tree-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 0.15s;
+
+      &:hover {
+        background: #f8f9fe;
+      }
+      &.selected {
+        background: rgba(94, 114, 228, 0.08);
+        border-left-color: #5e72e4;
+      }
+
+      .row-icon {
+        color: #8898aa;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .row-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex: 1;
+      }
+      .row-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #32325d;
+      }
+      .row-sub {
+        font-size: 11px;
+        color: #8898aa;
+      }
+
+      .row-inactive {
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #f5365c;
+        background: #fce3e3;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      .row-delete {
+        background: transparent;
+        border: none;
+        color: #adb5bd;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.15s;
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+        &:hover {
+          color: #f5365c;
+          background: #fee7eb;
+        }
+      }
+      &:hover .row-delete {
+        opacity: 1;
+      }
+    }
+
+    .tree-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #adb5bd;
+      padding: 40px 16px;
+      gap: 8px;
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  // ═══ DETALHE ══════════════════════════════════════════════
+  .cat-detail-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+    padding: 28px;
+
+    &.empty-detail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #adb5bd;
+      padding: 80px 24px;
+      text-align: center;
+      mat-icon {
+        font-size: 56px;
+        width: 56px;
+        height: 56px;
+        opacity: 0.5;
+        margin-bottom: 12px;
+      }
+      h2 {
+        color: #525f7f;
+        font-size: 18px;
+        margin: 0 0 6px;
+      }
+      p {
+        font-size: 13px;
+        margin: 0;
+      }
+    }
+
+    .detail-header h2 {
+      margin: 0 0 20px;
+      font-size: 18px;
+      color: #32325d;
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    .col-2 {
+      grid-column: span 2;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #8898aa;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+    input,
+    select {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #525f7f;
+      outline: none;
+      &:focus {
+        border-color: #5e72e4;
+      }
+    }
+    &.check {
+      justify-content: center;
+    }
+    .help-text {
+      color: #adb5bd;
+      font-size: 11px;
+    }
+  }
+
+  .detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+
+    .btn-cancel {
+      background: white;
+      border: 1px solid #dee2e6;
+      color: #525f7f;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      &:hover {
+        background: #f4f6f9;
+      }
+    }
+    .btn-save {
+      background: #5e72e4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      &:hover:not(:disabled) {
+        background: #324cdd;
+      }
+      &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  // ═══ CAMPOS EXTRAS (defs) ═════════════════════════════════
+  .defs-section {
+    margin-top: 32px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 24px;
+
+    .defs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h3 {
+        margin: 0;
+        font-size: 15px;
+        color: #32325d;
+      }
+      .btn-add-def {
+        background: #eef2ff;
+        color: #324cdd;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+        &:hover {
+          background: #dfe6ff;
+        }
+      }
+    }
+
+    .help-text {
+      color: #8898aa;
+      font-size: 12px;
+      margin: 6px 0 16px;
+    }
+
+    .def-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8f9fe;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+
+      .def-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px; // respiro entre rótulo e descrição
+      }
+
+      .def-label {
+        font-size: 15px; // era 13.5px
+        font-weight: 700;
+        color: #32325d;
+        .req {
+          color: #f5365c;
+        }
+      }
+
+      .def-sub {
+        font-size: 13px; // era 11.5px
+        color: #64748b; // cinza um pouco mais escuro = mais legível
+        font-family: "Courier New", monospace;
+        letter-spacing: 0.01em;
+      }
+
+      .def-delete {
+        background: transparent;
+        border: none;
+        color: #adb5bd;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 50%;
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+        &:hover {
+          color: #f5365c;
+          background: #fee7eb;
+        }
+      }
+    }
+
+    .defs-empty {
+      color: #adb5bd;
+      font-size: 13px;
+    }
+
+    .def-editor {
+      background: #f8f9fe;
+      border: 1px dashed #c7cdd8;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 12px;
+    }
+  }
+}
+
+// Responsivo: empilha colunas em telas menores
+@media (max-width: 1100px) {
+  .cat-container .cat-layout {
+    grid-template-columns: 1fr;
+  }
+}

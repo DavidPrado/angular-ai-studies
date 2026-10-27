@@ -1,0 +1,71 @@
+<div class="job-card" [class.terminal]="isTerminal()">
+  <!-- Cabeçalho do card -->
+  <div class="job-header">
+    <div class="job-info">
+      <mat-icon class="job-icon">{{ getOperationIcon() }}</mat-icon>
+      <div class="job-details">
+        <span class="job-title">{{ getOperationLabel() }}</span>
+        <span class="job-entity">{{ job.entity }}</span>
+      </div>
+    </div>
+
+    <div class="job-meta">
+      <span class="job-date">{{ job.queuedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        <mat-icon>{{ job.status === 'DONE' ? 'check_circle' :
+                     job.status === 'FAILED' ? 'error' :
+                     job.status === 'PROCESSING' ? 'sync' :
+                     job.status === 'QUEUED' ? 'schedule' :
+                     job.status === 'PARTIAL' ? 'warning' : 'cancel' }}</mat-icon>
+        {{ job.status }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Barra de progresso -->
+  <div class="job-progress">
+    <mat-progress-bar
+      [mode]="getProgressBarMode()"
+      [value]="job.progressPercent"
+      [color]="getProgressBarColor()">
+    </mat-progress-bar>
+    <div class="progress-info">
+      <span class="progress-text">
+        {{ job.processedItems }} / {{ job.totalItems }} itens
+        ({{ job.progressPercent }}%)
+      </span>
+      <span class="progress-remaining" *ngIf="job.remainingSeconds">
+         {{ formatRemaining(job.remainingSeconds) }} restantes
+      </span>
+    </div>
+  </div>
+
+  <!-- Estatísticas -->
+  <div class="job-stats">
+    <div class="stat success">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ job.successItems }} sucesso</span>
+    </div>
+    <div class="stat error" *ngIf="job.errorItems > 0">
+      <mat-icon>error</mat-icon>
+      <span>{{ job.errorItems }} erros</span>
+    </div>
+  </div>
+
+  <!-- Ações -->
+  <div class="job-actions">
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="onCancel()"
+      *ngIf="canCancel()"
+      matTooltip="Cancelar operação">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <span class="job-id" matTooltip="ID do job">
+      ID: {{ job.id | slice:0:8 }}...
+    </span>
+  </div>
+</div>
