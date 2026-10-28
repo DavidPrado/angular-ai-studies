@@ -44,4 +44,11 @@ export class CatalogService {
   remove(id: string): Observable<void> {
     return this.api.delete<void>(`${this.path}/${id}`);
   }
+
+  semanticSearch(query: string, topK: number = 10): Observable<any[]> {
+    return this.api.post<any[]>('catalog/items/search/semantic', {
+      query,
+      topK,
+    });
+  }
 }

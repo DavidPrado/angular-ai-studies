@@ -28,16 +28,44 @@
   </header>
 
   <!-- Filtros -->
+  <!-- Filtros -->
   <section class="filter-card" [formGroup]="filterForm">
     <div class="filter-grid">
-      <div class="search-box">
-        <mat-icon>search</mat-icon>
+      
+      <!-- ★ CAIXA DE BUSCA HÍBRIDA (Tradicional + IA) ★ -->
+      <div class="search-box" [class.semantic-active]="isSemanticMode">
+        <!-- Ícone dinâmico: lupa (normal) ou estrelinhas (modo IA) -->
+        <mat-icon>{{ isSemanticMode ? 'auto_awesome' : 'search' }}</mat-icon>
+        
         <input
           type="text"
-          placeholder="Buscar por nome, SKU ou EAN (ex.: PRD-000007)..."
+          [placeholder]="isSemanticMode ? 'Busca por IA ativa... (pressione Enter)' : 'Buscar por nome, SKU ou EAN...'"
           formControlName="search"
+          (keyup.enter)="onSemanticSearch()"
         />
+
+        <!-- Botão de Acionar Busca com IA -->
+        <button
+          mat-icon-button
+          class="ai-search-btn"
+          (click)="onSemanticSearch()"
+          [disabled]="isSearchingSemantic"
+          matTooltip="Buscar por significado com IA">
+          <mat-icon *ngIf="!isSearchingSemantic">auto_awesome</mat-icon>
+          <mat-spinner *ngIf="isSearchingSemantic" diameter="20" class="spinner"></mat-spinner>
+        </button>
+
+        <!-- Botão de Sair do Modo IA e Limpar (só aparece quando ativo) -->
+        <button
+          *ngIf="isSemanticMode"
+          mat-icon-button
+          class="clear-ai-btn"
+          (click)="clearSemanticSearch()"
+          matTooltip="Voltar para busca tradicional e limpar">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
+      <!-- ★ FIM DA CAIXA DE BUSCA HÍBRIDA ★ -->
 
       <div class="select-box">
         <label>STATUS</label>
@@ -68,7 +96,6 @@
         </select>
       </div>
 
-      <!-- ★ NOVO: ordenação padrão = mais recentes primeiro -->
       <div class="select-box">
         <label>ORDENAR POR</label>
         <select formControlName="sort">

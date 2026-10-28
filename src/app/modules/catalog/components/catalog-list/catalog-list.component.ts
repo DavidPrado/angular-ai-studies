@@ -24,8 +24,8 @@ import {
 import { UiPermissionService } from '../../../../core/auth/ui-permission.service';
 import { BulkExportButtonComponent } from '../../../bulk/components/bulk-export-button/bulk-export-button.component';
 import { BulkImportDialogComponent } from '../../../bulk/components/bulk-import-dialog/bulk-import-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-/** Níveis de sinalização visual da margem de lucro. */
 export type MarginLevel = 'critical' | 'low' | 'medium' | 'high';
 
 @Component({
@@ -40,6 +40,7 @@ export type MarginLevel = 'critical' | 'low' | 'medium' | 'high';
     MatTooltipModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     BulkExportButtonComponent,
   ],
   templateUrl: './catalog-list.component.html',
@@ -86,6 +87,9 @@ export class CatalogListComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
+  isSemanticMode = false;
+  isSearchingSemantic = false;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
@@ -98,6 +102,9 @@ export class CatalogListComponent implements OnInit {
     this.filterForm.valueChanges
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(() => {
+        if (this.isSemanticMode) {
+          this.isSemanticMode = false;
+        }
         this.pageIndex = 0;
         if (this.paginator) this.paginator.pageIndex = 0;
         this.loadItems();
@@ -307,12 +314,11 @@ export class CatalogListComponent implements OnInit {
     const dialogRef = this.dialog.open(BulkImportDialogComponent, {
       width: '450px',
       disableClose: true,
-      panelClass: 'custom-dialog-container', 
+      panelClass: 'custom-dialog-container',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-       
         this.snack
           .open(
             'Acompanhe o progresso na Central de Operações',
@@ -328,5 +334,50 @@ export class CatalogListComponent implements OnInit {
           });
       }
     });
+  }
+
+  onSemanticSearch(): void {
+    const query = this.filterForm.get('search')?.value;
+
+    if (!query || query.trim().length < 3) {
+      this.snack.open(
+        'Digite pelo menos 3 caracteres para a busca inteligente.',
+        'OK',
+        { duration: 3000 },
+      );
+      return;
+    }
+
+    this.isSearchingSemantic = true;
+    this.isSemanticMode = true;
+
+    this.catalogService.semanticSearch(query).subscribe({
+      next: (results) => {
+        this.dataSource.data = results;
+        this.totalElements = results.length;
+        this.isSearchingSemantic = false;
+
+        this.snack.open(
+          `✨ IA encontrou ${results.length} produtos relacionados!`,
+          'OK',
+          { duration: 3000 },
+        );
+      },
+      error: (err) => {
+        this.isSearchingSemantic = false;
+        this.snack.open(
+          'Erro na busca inteligente. Tente novamente.',
+          'Fechar',
+          { duration: 4000 },
+        );
+        console.error('Erro na busca semântica:', err);
+      },
+    });
+  }
+
+  clearSemanticSearch(): void {
+    this.isSemanticMode = false;
+    this.filterForm.get('search')?.setValue('');
+    this.loadItems();
   }
 }

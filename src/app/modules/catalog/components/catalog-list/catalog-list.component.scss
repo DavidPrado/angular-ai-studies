@@ -74,24 +74,40 @@
       display: flex;
       align-items: center;
       background: #f4f6f9;
-      padding: 0 16px;
+      padding: 0 8px; /* Ajustado para caber os botões internos */
       border-radius: 8px;
       flex: 2;
       min-width: 260px;
       height: 40px;
       border: 1px solid transparent;
       transition: all 0.2s;
+
       &:focus-within {
         border-color: #5e72e4;
         background: white;
       }
-      mat-icon {
+
+      /* ★ NOVO: Estilo visual quando a busca por IA está ativa */
+      &.semantic-active {
+        border-color: #5e72e4;
+        background: #f0f3ff;
+        box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.15);
+
+        mat-icon:first-child {
+          color: #5e72e4;
+          animation: pulse-icon 2s infinite;
+        }
+      }
+
+      mat-icon:first-child {
         color: #adb5bd;
-        margin-right: 12px;
+        margin-right: 8px;
         font-size: 20px;
         width: 20px;
         height: 20px;
+        transition: color 0.2s;
       }
+
       input {
         border: none;
         background: transparent;
@@ -100,7 +116,54 @@
         outline: none;
         font-size: 13px;
         color: #525f7f;
+        flex: 1; /* Garante que o input ocupe todo o espaço disponível */
+
+        &::placeholder {
+          color: #adb5bd;
+        }
       }
+
+      /* Estilos dos botões internos (IA e Limpar) */
+      .ai-search-btn, 
+      .clear-ai-btn {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          margin: 0; /* Remove margem padrão para alinhar perfeitamente */
+        }
+      }
+
+      .ai-search-btn {
+        color: #5e72e4;
+        &:hover:not(:disabled) {
+          background: rgba(94, 114, 228, 0.1);
+        }
+        &:disabled {
+          color: #adb5bd;
+          cursor: wait;
+        }
+      }
+
+      .clear-ai-btn {
+        color: #f5365c;
+        &:hover {
+          background: rgba(245, 54, 92, 0.1);
+        }
+      }
+
+      .spinner {
+        display: block;
+      }
+    }
+
+    /* ★ NOVO: Animação suave para o ícone de IA */
+    @keyframes pulse-icon {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.8; }
     }
 
     .select-box {
