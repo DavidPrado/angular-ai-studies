@@ -51,3 +51,11 @@ export interface OperationsFilter {
   status?: BulkJobStatus;
   entity?: string;
 }
+
+export interface RowErrorDetail {
+  lineNumber: number;
+  rowData: Record<string, string>;
+  originalRow: string;
+  errorMessages: string[];
+  errorCode: string;
+}

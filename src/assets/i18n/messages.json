@@ -457,5 +457,11 @@
   },
   "menu.operations_center_desc": {
     "pt": "Acompanhe importações e exportações em tempo real"
+  },
+  "menu.catalog_manual": {
+    "pt": "Manual do Catálogo"
+  },
+  "menu.catalog_manual_desc": {
+    "pt": "Guia de uso e ajuda"
   }
 }

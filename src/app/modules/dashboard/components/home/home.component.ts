@@ -89,6 +89,13 @@ export class HomeComponent implements OnInit {
               route: '/v1/catalogo/categorias',
               searchTerms: ['categorias', 'categories', 'secoes'],
             },
+            {
+              labelKey: 'menu.catalog_manual',
+              descKey: 'menu.catalog_manual_desc',
+              icon: 'menu_book',
+              route: '/v1/catalogo/manual',
+              searchTerms: ['manual', 'ajuda', 'help', 'guia', 'guide', 'tutorial'],
+            },
           ],
         },
         {

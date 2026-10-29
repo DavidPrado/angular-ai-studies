@@ -28,6 +28,7 @@ import { BulkJob } from '../../../models/bulk-job.model';
 export class BulkJobCardComponent {
   @Input() job!: BulkJob;
   @Output() cancel = new EventEmitter<BulkJob>();
+  @Output() viewErrors = new EventEmitter<string>();
 
   onCancel(): void {
     this.cancel.emit(this.job);
@@ -52,10 +53,14 @@ export class BulkJobCardComponent {
 
   getProgressBarColor(): string {
     switch (this.job.status) {
-      case 'DONE': return 'accent';
-      case 'FAILED': return 'warn';
-      case 'PARTIAL': return 'accent';
-      default: return 'primary';
+      case 'DONE':
+        return 'accent';
+      case 'FAILED':
+        return 'warn';
+      case 'PARTIAL':
+        return 'accent';
+      default:
+        return 'primary';
     }
   }
 
@@ -73,10 +78,10 @@ export class BulkJobCardComponent {
 
   getOperationLabel(): string {
     const labels: Record<string, string> = {
-      'IMPORT_JSON': 'Importação JSON',
-      'IMPORT_CSV': 'Importação CSV',
-      'EXPORT_CSV': 'Exportação CSV',
-      'EXPORT_XLSX': 'Exportação Excel',
+      IMPORT_JSON: 'Importação JSON',
+      IMPORT_CSV: 'Importação CSV',
+      EXPORT_CSV: 'Exportação CSV',
+      EXPORT_XLSX: 'Exportação Excel',
     };
     return labels[this.job.operation] || this.job.operation;
   }
@@ -92,5 +97,9 @@ export class BulkJobCardComponent {
       FAILED: 'status-failed',
     };
     return map[this.job.status] || '';
+  }
+
+  onViewErrors() {
+    this.viewErrors.emit(this.job.id);
   }
 }

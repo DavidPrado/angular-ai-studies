@@ -53,16 +53,28 @@
   </div>
 
   <!-- Ações -->
-  <div class="job-actions">
-    <button
-      mat-stroked-button
-      color="warn"
-      (click)="onCancel()"
-      *ngIf="canCancel()"
-      matTooltip="Cancelar operação">
-      <mat-icon>cancel</mat-icon>
-      Cancelar
-    </button>
+ <div class="job-actions">
+    <div class="actions-left">
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="onCancel()"
+        *ngIf="canCancel()"
+        matTooltip="Cancelar operação">
+        <mat-icon>cancel</mat-icon> Cancelar
+      </button>
+
+      <!-- BOTÃO NOVO: VER ERROS -->
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="onViewErrors()"
+        *ngIf="job.errorItems > 0 && isTerminal()"
+        matTooltip="Ver detalhes dos erros">
+        <mat-icon>bug_report</mat-icon> 
+        {{ job.errorItems }} Erro{{ job.errorItems > 1 ? 's' : '' }}
+      </button>
+    </div>
 
     <span class="job-id" matTooltip="ID do job">
       ID: {{ job.id | slice:0:8 }}...

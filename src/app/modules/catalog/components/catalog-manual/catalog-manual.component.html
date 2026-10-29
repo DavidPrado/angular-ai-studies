@@ -1,0 +1,97 @@
+<div class="manual-container">
+  <!-- Header -->
+  <header class="manual-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">menu_book</mat-icon>
+      <div class="header-text">
+        <h1>Manual do Catálogo</h1>
+        <p>Guia completo para gerenciar produtos e serviços no Moviment Tech</p>
+      </div>
+    </div>
+    <button mat-stroked-button routerLink="/v1/catalogo" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Voltar ao Catálogo
+    </button>
+  </header>
+
+  <!-- Links Rápidos -->
+  <section class="quick-links">
+    <h2>Acesso Rápido</h2>
+    <div class="quick-links-grid">
+      <button
+        *ngFor="let link of quickLinks"
+        mat-raised-button
+        [routerLink]="link.route"
+        class="quick-link-btn">
+        <mat-icon>{{ link.icon }}</mat-icon>
+        {{ link.label }}
+      </button>
+    </div>
+  </section>
+
+  <!-- Tópicos do Manual -->
+  <section class="topics-section">
+    <h2>Conteúdo do Manual</h2>
+    
+    <mat-accordion multi="true">
+      <mat-expansion-panel
+        *ngFor="let topic of topics; let i = index"
+        [expanded]="panelOpenState && i === 0"
+        class="topic-panel">
+        
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon class="topic-icon">{{ topic.icon }}</mat-icon>
+            <div class="topic-header-text">
+              <span class="topic-title">{{ topic.title }}</span>
+              <span class="topic-desc">{{ topic.description }}</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="topic-content">
+          <ng-container *ngFor="let section of topic.sections">
+            <div class="section-block">
+              <h3 class="section-title">
+                <mat-icon>{{ section.icon }}</mat-icon>
+                {{ section.title }}
+              </h3>
+
+              <ul class="content-list">
+                <li *ngFor="let item of section.content">{{ item }}</li>
+              </ul>
+
+              <!-- Dicas -->
+              <div *ngIf="section.tips" class="tips-box">
+                <div class="tips-header">
+                  <mat-icon>lightbulb</mat-icon>
+                  <strong>Dicas:</strong>
+                </div>
+                <ul class="tips-list">
+                  <li *ngFor="let tip of section.tips">{{ tip }}</li>
+                </ul>
+              </div>
+
+              <!-- Avisos -->
+              <div *ngIf="section.warnings" class="warnings-box">
+                <div class="warnings-header">
+                  <mat-icon>warning</mat-icon>
+                  <strong>Atenção:</strong>
+                </div>
+                <ul class="warnings-list">
+                  <li *ngFor="let warning of section.warnings">{{ warning }}</li>
+                </ul>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section>
+
+  <!-- Footer -->
+  <footer class="manual-footer">
+    <p>Moviment Tech · Manual do Catálogo v1.0</p>
+    <p>Última atualização: 29/10/2026</p>
+  </footer>
+</div>

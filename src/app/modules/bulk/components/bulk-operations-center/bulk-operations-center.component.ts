@@ -7,10 +7,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subject, takeUntil, interval, startWith } from 'rxjs';
 import { BulkImportService } from '../../services/bulk-import.service';
 import { BulkJob, BulkJobStatus } from '../../models/bulk-job.model';
 import { BulkJobCardComponent } from './bulk-job-card/bulk-job-card.component';
+import { JobErrorsDrawerComponent } from '../job-errors-drawer/job-errors-drawer.component';
 
 @Component({
   selector: 'app-bulk-operations-center',
@@ -24,7 +26,8 @@ import { BulkJobCardComponent } from './bulk-job-card/bulk-job-card.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    BulkJobCardComponent,
+    MatDialogModule,
+    BulkJobCardComponent
   ],
   templateUrl: './bulk-operations-center.component.html',
   styleUrl: './bulk-operations-center.component.scss',
@@ -32,8 +35,8 @@ import { BulkJobCardComponent } from './bulk-job-card/bulk-job-card.component';
 export class BulkOperationsCenterComponent implements OnInit, OnDestroy {
   private readonly importService = inject(BulkImportService);
   private readonly snack = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
   private readonly destroy$ = new Subject<void>();
-  
 
   jobs: BulkJob[] = [];
   filteredJobs: BulkJob[] = [];
@@ -47,12 +50,10 @@ export class BulkOperationsCenterComponent implements OnInit, OnDestroy {
     this.startSmartPolling();
   }
 
-  
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 
   loadJobs(): void {
     this.importService
@@ -97,8 +98,8 @@ export class BulkOperationsCenterComponent implements OnInit, OnDestroy {
       }
       if (this.operationFilter !== 'ALL') {
         const isImport = job.operation.startsWith('IMPORT');
-        if (this.operationFilter == 'IMPORT' && !isImport) return false;
-        if (this.operationFilter == 'EXPORT' && !isImport) return false;
+        if (this.operationFilter === 'IMPORT' && !isImport) return false;
+        if (this.operationFilter === 'EXPORT' && isImport) return false;
       }
       return true;
     });
@@ -195,5 +196,21 @@ export class BulkOperationsCenterComponent implements OnInit, OnDestroy {
   getFailedJobsCount(): number {
     return this.jobs.filter((j) => ['FAILED', 'PARTIAL'].includes(j.status))
       .length;
+  }
+
+  // ✅ Método para abrir o MODAL de erros
+  viewJobErrors(jobId: string): void {
+    const dialogRef = this.dialog.open(JobErrorsDrawerComponent, {
+      width: '800px',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      data: { jobId },
+      panelClass: 'job-errors-modal',
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Modal de erros fechado');
+    });
   }
 }

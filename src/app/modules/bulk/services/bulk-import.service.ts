@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../assets/environments/environment';
+import { RowErrorDetail } from '../models/bulk-job.model';
 import {
   BulkJob,
   CreateImportJobPayload,
@@ -42,6 +43,15 @@ export class BulkImportService {
       `${this.baseUrl}/jobs/${jobId}/cancel`,
       {}, // Body vazio (ação é identificada pelo jobId na URL)
       { withCredentials: true },
+    );
+  }
+
+  getJobErrorDetails(jobId: string): Observable<RowErrorDetail[]> {
+    return this.http.get<RowErrorDetail[]>(
+      `${this.baseUrl}/jobs/${jobId}/errors/detail`,
+      {
+        withCredentials: true,
+      },
     );
   }
 }
